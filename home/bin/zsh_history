@@ -1,0 +1,102 @@
+: 1681943605:0;mkdir ~/bin
+: 1681943618:0;echo "##" >/root/bin/theme
+: 1681943644:0;cp ~/.oh-my-zsh/themes/robbyrussell.zsh-theme ~/bin/theme
+: 1681943657:0;nano .zshrc
+: 1681943660:0;cd
+: 1681943661:0;nano .zshrc
+: 1681943783:0;clear
+: 1681943792:0;source .zshrc
+: 1681943800:0;mkdir /home/theme
+: 1681943804:0;cd /
+: 1681943805:0;ls
+: 1681943816:0;grub-install /dev/sda
+: 1681943824:0;lsblk
+: 1681943895:0;grub-install --target-directory=/boot --target=i386-pc
+: 1681943900:0;grub-install
+: 1681943902:0;grub-install --help
+: 1681943940:0;grub-install --target=i386-pc
+: 1681943944:0;grub-install --target=i386-pc /dev/sda
+: 1681943955:0;grub-mkconfig -o /boot/grub/grub.cfg
+: 1681943965:0;pacman -S intel-ucode amd-ucodce
+: 1681943969:0;pacman -S intel-ucode amd-ucode
+: 1681943978:0;passwd 
+: 1681944007:0;ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+: 1681944032:0;echo "me ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
+: 1681944057:0;echo "en_US.UTF-8 UTF-8" >>/etc/locale.gen
+: 1681944072:0;echo "LANG=en_US.UTF-8" >>/etc/locale.conf
+: 1681944074:0;locale-gen
+: 1681944084:0;hwclock --systohc
+: 1681944100:0;pacman -S docker
+: 1681944163:0;pacman -S docker-xbuild docker-compose docker-scan lxd lxc libvirt qemu virt-manager virtualbox 
+: 1681944170:0;nano /etc/pacman.conf
+: 1681944202:0;pacman -S docker-xbuild docker-compose docker-scan lxd lxc libvirt qemu virt-manager virtualbox 
+: 1681944220:0;pacman -S docker-buildx docker-compose docker-scan lxd lxc libvirt qemu virt-manager virtualbox 
+: 1681944350:0;clear
+: 1681944368:0;groupadd me
+: 1681944372:0;groupadd sudo
+: 1681944376:0;groupadd networking
+: 1681944402:0;useradd me -g me -G root,sys,networking,sudo -d /home -s /bin/zsh
+: 1681944405:0;passwd me
+: 1681944410:0;su me
+: 1681944472:0;mine $HOME
+: 1681944476:0;zsh
+: 1681944501:0;unalias gh
+: 1681944507:0;gh auth login
+: 1681944546:0;source $func/get-yay
+: 1681944548:0;get-yay
+: 1681944604:0;mine $HOME
+: 1681944606:0;cd
+: 1681944618:0;pacman -S firefox opera
+: 1681944671:0;cd /main/install-scripts
+: 1681944677:0;cd /master/install-scripts
+: 1681944679:0;ls
+: 1681944689:0;nano enable_list
+: 1681944829:0;nano enable_command
+: 1681945050:0;ls
+: 1681945066:0;chmod+x enable_command
+: 1681945073:0;nano enable_command
+: 1681945138:0;source enable_command
+: 1681945142:0;ls
+: 1681945147:0;nano enable_command
+: 1681945182:0;source enable_command
+: 1681945187:0;ls
+: 1681945194:0;ls enale_command
+: 1681945413:0;./enable_command
+: 1681945419:0;nano enable_command
+: 1681945453:0;foreach items in /main/install-scripts/enable_list; do\
+systemctl enable ${items}\
+done
+: 1681945466:0;nano enable_list
+: 1681945517:0;for items in ./enable_list; do\
+systemctl enable ${items} \
+done
+: 1681945528:0;echo $items
+: 1681945571:0;for each in ${items}; do\
+systemctl enable $each\
+done
+: 1681945582:0;echo $PWD
+: 1681945709:0;foreach does in $(cat ./enable_list); do\
+systemctl enable $does\
+done
+: 1681945817:0;systemctl enable iwd
+: 1681945822:0;systemctl enable dhcpcd
+: 1681945835:0;yay butterfly
+: 1681945973:0;reboot
+: 1681946267:0;mount /dev/sda5 /var
+: 1681946274:0;swapon /dev/sda6
+: 1681946275:0;lsblk
+: 1681946289:0;pacman -S arch-install-scripts
+: 1681946304:0;sudo genfstab -U / >/etc/fstab
+: 1681946396:0;ip a
+: 1681946412:0;sudo iwctl station wlan0 connect Aj1982
+: 1681946452:0;ls
+: 1681946467:0;mine $HOME
+: 1681946471:0;ip a
+: 1681946551:0;ls
+: 1681946567:0;pacd kate kwrite 
+: 1681946632:0;source $func/get-klassy
+: 1681946647:0;yay lightly
+: 1681947080:0;ln -sf /var /home/links
+: 1681947088:0;ln -sf /home /home/links
+: 1681947098:0;ln -sf /run /home/links
+: 1681947106:0;ln -sf /usr /home/links
