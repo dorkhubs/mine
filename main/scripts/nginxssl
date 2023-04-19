@@ -1,0 +1,110 @@
+#!/bin/bash -e
+
+exec > >(tee -i /var/log/stackscript.log)
+
+# Update and upgrade the system
+
+sudo apt-get update
+
+sudo apt-get -y upgrade
+
+sudo apt install net-tools -y
+
+# Get IP info
+
+IPADDR=$(/sbin/ifconfig eth0 | awk '/inet / { print $2 }' | sed 's/addr://')
+
+RDNS_HOSTNAME=$(echo $IPADDR | tr '.' '-')
+
+RDNS_HOSTNAME="$RDNS_HOSTNAME.ip.linodeusercontent.com"
+
+echo "$RDNS_HOSTNAME   is the hostname"
+
+# Install Nginx
+
+sudo apt-get -y install nginx
+
+# Install certbot
+
+sudo apt-get -y install certbot python3-certbot-nginx
+
+# Obtain SSL certficate
+
+sudo systemctl stop nginx
+
+echo A | sudo certbot certonly --standalone -d "$RDNS_HOSTNAME" --register-unsafely-without-email
+
+# Add location block for the reverse proxy
+
+#sudo bash -c "
+
+cat > /etc/nginx/sites-available/default <<EOF
+
+server {
+
+    listen 80;
+
+    listen 443 ssl;
+
+    server_name $RDNS_HOSTNAME;
+
+    ssl_certificate /etc/letsencrypt/live/$RDNS_HOSTNAME/fullchain.pem;
+
+    ssl_certificate_key /etc/letsencrypt/live/$RDNS_HOSTNAME/privkey.pem;
+
+    location / {
+
+        proxy_pass http://localhost:3000;
+
+        proxy_http_version 1.1;
+
+        proxy_set_header Upgrade \$http_upgrade;
+
+        proxy_set_header Connection 'upgrade';
+
+        proxy_set_header Host \$host;
+
+        proxy_cache_bypass \$http_upgrade;
+
+    }
+
+}
+
+EOF
+
+#"
+
+# Retrieve Node.js script file from GitHub repository
+
+sudo apt-get install git
+
+cd /var/www
+
+sudo git clone https://github.com/lil-shake-code/COMMON-LINODE-SERVER.git
+
+# Install Node.js and npm
+
+curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+
+sudo apt-get install -y nodejs
+
+cd /var/www/COMMON-LINODE-SERVER
+
+sudo npm install -g pm2
+
+#start the websocket server using pm2 and run on startup
+
+pm2 start index.js --name "websocket-server"
+
+# pm2 startup
+
+pm2 save
+
+# sudo systemctl enable pm2-undefined
+
+# restart nginx and run on startup
+
+# sudo systemctl enable nginx
+
+sudo service nginx restart
+

@@ -1,0 +1,147 @@
+#!/usr/bin/env zsh
+
+provisioning() {
+
+	 ln -sf /usr/share/zoneinfo/America/Los_Angeles /etc/localtime
+
+	 hwclock --systohc
+
+	 echo "en_US.UTF-8 UTF-8" >>/etc/locale.gen
+	 echo "LANG=en_UTF-8" >>/etc/locale.conf
+	 locale-gen; wait
+
+	 echo "me ALL=(ALL:ALL) NOPASSWD: ALL" >>/etc/sudoers
+	 echo " %root ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+	 echo " %me ALL=(ALL:ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+
+	 echo "Making Password for 'root' "
+	    echo "no" >rp
+	    cat rp >rpp
+	    cat rp >>rpp
+	    passwd root <rpp
+	    rm rp rpp
+
+	 sleep 1
+
+}
+
+makeusers() {
+
+	 groupadd me
+	 groupadd admin
+	 groupadd sudoers
+	 groupadd web
+
+	 useradd -M me -g me -G root,sys,network,sudoers,web,admin -d /home -s /bin/zsh
+
+
+}
+
+provisionUsers() {
+
+	 echo "Making Password for 'me' "
+	 echo "no" >np
+	 cat np >npp
+	 cat np >>npp
+	 passwd me <npp; wait
+	 rm np npp
+
+	 sleep 1
+
+	 chown -R me:me /home
+
+}
+
+installGrub() {
+
+	 grub-install /dev/nvme0n1; wait
+
+   mkinitcpio -P
+
+	 grub-mkconfig -o /boot/grub/grub.cfg
+
+}
+
+
+rebo() {
+
+	 echo "Exit Chroot Env? :$ext"
+	 read ext
+
+	 if [[ $ext = y ]]; then
+		  exit 0; exit 0
+
+	 fi
+
+}
+
+
+archyinstall() {
+
+	pacman -S plasma plasma-desktop plasma-sdk plasma-wayland-session plasma-wayland-protocols gimp inkscape i3 sway
+	yes | pacman -S docker docker-compose composer
+
+}
+
+autoSUme() {
+
+	echo "no" >sume
+	cat sume >mesu
+	cat sume >>mesu
+	su me <mesu
+	wait
+	rm sume mesu
+
+}
+
+autoSUroot() {
+
+	echo "no" >sume
+	cat sume >mesu
+	cat sume >>mesu
+	sudo su <mesu
+	wait
+	rm sume mesu
+
+
+}
+
+updateNew() {
+	
+	yes | pacman -Syyu
+	yes | pacman -Syuu
+	pacman -Fy
+
+	if [ -e "/main" ]; then
+		for f in /main/source-docs/*; do
+			source $f
+		done
+		sleep 1
+		cd /main/functions/; source get-yay; wait
+		source get-lightly; wait
+		get-yay
+
+		get-lightly
+
+		get-klassy; wait
+	fi
+
+	chown -R me:me /home
+
+}
+
+
+
+# Call Commands
+provisioning
+makeusers
+installGrub
+#archyinstall
+#autoSUme && updateNew
+#autoSUroot
+su me && updateNew; wait
+su root 
+rebo
+
+# Done

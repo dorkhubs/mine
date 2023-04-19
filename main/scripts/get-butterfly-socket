@@ -1,0 +1,5 @@
+ cd /etc/systemd/system
+ curl -O https://raw.githubusercontent.com/paradoxxxzero/butterfly/master/butterfly.service
+ curl -O https://raw.githubusercontent.com/paradoxxxzero/butterfly/master/butterfly.socket
+ systemctl enable butterfly.socket
+ systemctl start butterfly.socket
