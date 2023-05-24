@@ -1,0 +1,49 @@
+#!/usr/bin/env zsh
+
+function a_sctript() {
+
+   {
+      echo "Activating $0"; sleep 2
+
+      after_cf_disk() {
+
+         this=$whichever_function_is_called
+         that=[! $this ]
+
+         mkfs.vfat -F32 -I /dev/nvme0n1p2; wait
+         list=(
+            "/dev/nvme0n1p4"
+            "/dev/nvme0n1p6"
+            "/dev/nvme0n1p8"
+         )
+
+         foreach on_partitions in ${list}; do
+            mkfs.ext4 $on_partitions; wait
+            break
+         done
+
+         unset list
+         unset on_partitons
+
+      }	
+
+      while true; do
+         after_cf_disk
+         break
+      done
+
+   make_swap_disk() {
+
+      if $? = 0; then
+         mkswap /dev/nvme0n1p10
+      else
+         mkswap /dev/nvme0n1p10 && echo "Double Time Nigga" && sleep 2
+      fi      
+
+   }
+
+   }
+
+   make_swap_disk
+
+}
