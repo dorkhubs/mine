@@ -8,4 +8,9 @@ foreach items in /main/source-docs/*; do
    source $items
 done
 
+if [ -e "$HOME/.zshrc.pre-oh-my-zsh" ]; then
+   mv $HOME/.zshrc.pre-oh-my-zsh $HOME/.zshrc
+   source $theme
+fi
+
 
